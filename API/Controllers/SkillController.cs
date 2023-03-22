@@ -74,7 +74,7 @@ namespace API.Controllers
 
             var skillReadDTO = _mapper.Map<SkillReadDTO>(skill);
 
-            return CreatedAtRoute(nameof(GetSkillFromCategoryById), new { skillId = skillReadDTO.Id }, skillReadDTO);
+            return CreatedAtRoute(nameof(GetSkillFromCategoryById), new {categoryId=skillReadDTO.SkillCategoryId, skillId = skillReadDTO.Id }, skillReadDTO);
 
            
         }
