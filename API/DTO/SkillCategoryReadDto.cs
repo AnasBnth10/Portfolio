@@ -1,4 +1,6 @@
-﻿namespace API.DTO
+﻿using DAL.models.entities;
+
+namespace API.DTO
 {
     public class SkillCategoryReadDto
     {
@@ -7,5 +9,7 @@
         public string Name { get; set; }
 
         public string Description { get; set; }
+
+        public ICollection<SkillReadDTO> Skills { get; set; } 
     }
 }

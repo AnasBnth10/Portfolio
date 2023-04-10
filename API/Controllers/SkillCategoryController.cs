@@ -24,6 +24,7 @@ namespace API.Controllers
         public ActionResult<IEnumerable<SkillCategoryReadDto>> GetAllSkillCategories() {
 
             var skillCategoriesItems = _skillCategoryService.GetAllSkillCategories();
+            
 
             return Ok(_mapper.Map<IEnumerable<SkillCategoryReadDto>>(skillCategoriesItems));
         }
@@ -35,6 +36,20 @@ namespace API.Controllers
             var skillCategory = _skillCategoryService.GetSkillCategoryById(id);
 
             if(skillCategory !=  null)
+            {
+                return Ok(_mapper.Map<SkillCategoryReadDto>(skillCategory));
+            }
+
+            return NotFound();
+        }
+
+        [HttpGet("name", Name = "GetSkillCategoryByName")]
+        public ActionResult<SkillCategoryReadDto> GetSkillCategoryByName(string name)
+        {
+
+            var skillCategory = _skillCategoryService.GetSkillCategoryByName(name);
+
+            if (skillCategory != null)
             {
                 return Ok(_mapper.Map<SkillCategoryReadDto>(skillCategory));
             }

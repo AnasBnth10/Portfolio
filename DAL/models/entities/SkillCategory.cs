@@ -15,6 +15,6 @@ namespace DAL.models.entities
         public string Name { get; set; }
         [Required]
         public string Description { get; set; }
-        public ICollection<Skill> Skills { get; set; }
+        public ICollection<Skill>? Skills { get; set; }
     }
 }

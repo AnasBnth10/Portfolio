@@ -15,6 +15,7 @@ namespace DAL.repositories.interfaces
         Task<IEnumerable<SkillCategory>> GetAllSkillCategories();
 
         Task<SkillCategory> GetSkillCategoryById(int id);
+        Task<SkillCategory> GetSkillCategoryByName(String name);
 
         Task<SkillCategory> CreateSkillCategory(SkillCategory skillCategory);
 

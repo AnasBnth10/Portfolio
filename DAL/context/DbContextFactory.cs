@@ -14,7 +14,8 @@ namespace DAL.context
         {
             AppConfiguration appConfig = new AppConfiguration();
             var optionsBuilder = new DbContextOptionsBuilder<AppDBContext>();
-            optionsBuilder.UseSqlServer(appConfig.sqlConnectionString);
+            optionsBuilder.UseInMemoryDatabase("inMemory");
+            //optionsBuilder.UseSqlServer(appConfig.sqlConnectionString);
             return new AppDBContext(optionsBuilder.Options);
         }
     }

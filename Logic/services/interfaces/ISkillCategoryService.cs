@@ -13,6 +13,8 @@ namespace Logic.services.interfaces
 
         SkillCategory GetSkillCategoryById(int id);
 
+        SkillCategory GetSkillCategoryByName(string name);
+
         SkillCategory CreateSkillCategory(SkillCategory skillCategory);
     }
 }

@@ -10,10 +10,16 @@ namespace API.Profiles
         public SkillCategoryProfile()
         {
 
-            CreateMap<SkillCategory, SkillCategoryReadDto>();
-            CreateMap<SkillCategoryCreateDTO, SkillCategory>();
+            
+            
             CreateMap<Skill, SkillReadDTO>();
             CreateMap<SkillCreateDto, Skill>();
+
+            CreateMap<SkillCategory, SkillCategoryReadDto>();
+                
+            CreateMap<SkillCategoryCreateDTO, SkillCategory>();
+
+
         }
     }
 }

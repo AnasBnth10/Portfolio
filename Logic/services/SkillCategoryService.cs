@@ -31,5 +31,10 @@ namespace Logic.services
         {
             return _skillCategoryRepository.GetSkillCategoryById(id).Result;
         }
+
+        public SkillCategory GetSkillCategoryByName(string name)
+        {
+            return _skillCategoryRepository.GetSkillCategoryByName(name.ToUpper()).Result;
+        }
     }
 }

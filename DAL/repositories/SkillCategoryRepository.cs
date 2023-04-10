@@ -32,7 +32,7 @@ namespace DAL.repositories
         public async Task<IEnumerable<SkillCategory>> GetAllSkillCategories()
         {
             
-                var skillsCategories = await _context.SkillCategories.ToListAsync();
+                var skillsCategories = await _context.SkillCategories.Include(sc => sc.Skills).ToListAsync();
                 return skillsCategories;
             
         }
@@ -44,7 +44,11 @@ namespace DAL.repositories
                 return skillCategory;
         }
 
-        
+        public async Task<SkillCategory> GetSkillCategoryByName(string name)
+        {
+            var skillCategory = await _context.SkillCategories.FirstOrDefaultAsync(sc => sc.Name.ToUpper() == name);
+            return skillCategory;
+        }
     }
 
         

@@ -1,83 +1,77 @@
 ﻿using DAL.models.entities;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DAL.context
 {
-    public class AppDBContext : DbContext
+    public static class SeedDB
     {
-        public class OptionsBuild
+
+        public static void PrepPopulation(IApplicationBuilder app)
         {
-
-            public OptionsBuild()
+            using (var serviceScope = app.ApplicationServices.CreateScope())
             {
-                settings = new AppConfiguration();
-                optionsBuilder = new DbContextOptionsBuilder<AppDBContext>();
-                optionsBuilder.UseInMemoryDatabase("inMemory");
-                //optionsBuilder.UseSqlServer(settings.sqlConnectionString);
-                dbOptions = optionsBuilder.Options;
-
+                Seed(serviceScope.ServiceProvider.GetService<AppDBContext>());
             }
-            public DbContextOptionsBuilder<AppDBContext> optionsBuilder { get; set; }
-            public DbContextOptions<AppDBContext> dbOptions { get; set; }
-
-            private AppConfiguration settings { get; set; }
         }
 
-        public static OptionsBuild ops = new OptionsBuild();
-
-        public AppDBContext(DbContextOptions<AppDBContext> dbOptions) :  base(dbOptions)
+        public static void Seed(AppDBContext context)
         {
-           
-        }
 
-        public DbSet<SkillCategory> SkillCategories { get; set; }
-        public DbSet<Skill> Skills { get; set; }
+            var skillCategory1 = new SkillCategory();
+            var skillCategory2 = new SkillCategory();
+            var skillCategory3 = new SkillCategory();
+            var skillCategory4 = new SkillCategory();
 
-        public void SeedDb()
-        {
-            if (!SkillCategories.Any())
+
+            if (!context.SkillCategories.Any())
             {
 
-                var skillCategory1 = new SkillCategory()
+                skillCategory1 = new SkillCategory()
                 {
                     Name = "Programming Languages",
                     Description = "Programming Languages (Markup, Query, etc...)"
                 };
 
 
-                var skillCategory2 = new SkillCategory()
+                skillCategory2 = new SkillCategory()
                 {
                     Name = "Frameworks",
                     Description = "Frameworks"
                 };
 
 
-                var skillCategory3 = new SkillCategory()
+                skillCategory3 = new SkillCategory()
                 {
                     Name = "Office 365",
                     Description = "Office 365"
                 };
 
 
-                var skillCategory4 = new SkillCategory()
+                skillCategory4 = new SkillCategory()
                 {
                     Name = "Other",
                     Description = "Other"
                 };
 
-                skillCategory1 = SkillCategories.Add(skillCategory1).Entity;
-                skillCategory2 = SkillCategories.Add(skillCategory2).Entity;
-                skillCategory3 = SkillCategories.Add(skillCategory3).Entity;
-                skillCategory4 = SkillCategories.Add(skillCategory4).Entity;
+                skillCategory1 = context.SkillCategories.Add(skillCategory1).Entity;
+                skillCategory2 = context.SkillCategories.Add(skillCategory2).Entity;
+                skillCategory3 = context.SkillCategories.Add(skillCategory3).Entity;
+                skillCategory4 = context.SkillCategories.Add(skillCategory4).Entity;
+
+                context.SaveChanges();
 
 
-                var skillsPL = new List<Skill>()
+                if (!context.Skills.Any())
+                {
+
+
+                    var skillsPL = new List<Skill>()
             {
                 new Skill()
                 {
@@ -136,7 +130,7 @@ namespace DAL.context
                 }
             };
 
-                var skillsFrameworks = new List<Skill>()
+                    var skillsFrameworks = new List<Skill>()
                 {
                     new Skill()
                     {
@@ -181,7 +175,7 @@ namespace DAL.context
 
                 };
 
-                var skillsOffice365 = new List<Skill>()
+                    var skillsOffice365 = new List<Skill>()
                 {
                     new Skill()
                     {
@@ -215,7 +209,7 @@ namespace DAL.context
                     }
                 };
 
-                var skillsOther = new List<Skill>()
+                    var skillsOther = new List<Skill>()
                 {
                     new Skill()
                     {
@@ -259,32 +253,16 @@ namespace DAL.context
                     }
                 };
 
-                Skills.AddRange(skillsPL);
-                Skills.AddRange(skillsFrameworks);
-                Skills.AddRange(skillsOffice365);
-                Skills.AddRange(skillsOther);
+                    context.Skills.AddRange(skillsPL);
+                    context.Skills.AddRange(skillsFrameworks);
+                    context.Skills.AddRange(skillsOffice365);
+                    context.Skills.AddRange(skillsOther);
 
-                SaveChanges();
+                    context.SaveChanges();
+
+                }
             }
-        }
-        
+            }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder
-                .Entity<SkillCategory>()
-                .HasMany(sc => sc.Skills)
-                .WithOne(s => s.SkillCategory)
-                .HasForeignKey(s => s.SkillCategoryId);
-
-            modelBuilder
-                .Entity<Skill>()
-                .HasOne(s => s.SkillCategory)
-                .WithMany(sc => sc.Skills)
-                .HasForeignKey(s => s.SkillCategoryId);
-
-           
-                
-        }
     }
 }
